@@ -1,40 +1,27 @@
 const fs = require('fs')
+const service = require('./src/services/studentService')
 const Student = require('./src/models/student')
 
-const arguments = process.argv
+let argumentos = process.argv
 
-if (arguments.length == 2) {
-    console.log('debes introducir un comando')
-} else {
+switch(argumentos[2]) {
+    case 'listar':
+        let jsons = service.getStudents()
+        console.log(jsons)
 
-    switch (arguments[2]) {
-        case 'listar' :
-            console.log('aqui vamos a listar')
-            break;
-        default : 
-            console.log ('comando desconocido');
-            break;
-    }
+        break;
+    
+    case 'guardar':
+        let stu = Student('nuevo', 'ape', 'ap@com.com');
+        service.saveStudent(stu);
+        break;
+
+    case undefined: 
+        console.log('Atención - Tienes que pasar una acción.')
+        break;
+
+    default:
+        console.log('No entiendo qué quieres hacer.')
+
 }
 
-/*
-// new student to save
-let stu = new Student('aa', 'bb', 'aa@bb.com')
-
-// read database 'json'
-let fStu = fs.readFileSync('./src/database/students.json', { encoding: 'utf8'})
-let stus = []
-if (fStu.length != 0) {
-    stus = JSON.parse(fStu)
-}
-
-// add to array
-stus.push(stu)
-
-// transform to json
-const stusJ = JSON.stringify(stus)
-
-// write database 'json'
-fs.writeFileSync('./src/database/students.json', stusJ)
-
-*/
